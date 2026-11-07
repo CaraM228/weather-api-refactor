@@ -3,20 +3,25 @@ let celsius = true;
 const weatherContainer = document.getElementById("weather-card-container");
 //Async Function
 async function getWeather() {
-    const response = await fetch(weatherUrl);
-    if (!response.ok) {
-        throw new Error("Error! Weather data could not be loaded.");
-    }
-    const data = await response.json();
-    const forecastDays = data.forecast.forecastday;
-    if (weatherContainer) {
-        weatherContainer.innerHTML = "";
-        forecastDays.forEach((day) => {
-            weatherContainer.innerHTML += `
+    try {
+        const response = await fetch(weatherUrl);
+        if (!response.ok) {
+            throw new Error("Error! Weather data could not be loaded.");
+        }
+        const data = await response.json();
+        const errorMessage = document.getElementById("error-message");
+        if (errorMessage) {
+            errorMessage.textContent = "";
+        }
+        const forecastDays = data.forecast.forecastday;
+        if (weatherContainer) {
+            weatherContainer.innerHTML = "";
+            forecastDays.forEach((day) => {
+                weatherContainer.innerHTML += `
                     <article class="weather-card bg-white border border-black rounded-lg shadow-2xl p-4 text-center">
                     <h2 class="day text-blue-800 font-bold">${new Date(day.date).toLocaleDateString("en-US", {
-                weekday: "long"
-            })}</h2>
+                    weekday: "long"
+                })}</h2>
                     <p class="date">${day.date}</p>
                     <img
                         src="https:${day.day.condition.icon}"
@@ -27,7 +32,15 @@ async function getWeather() {
                         <p class="condition">${day.day.condition.text}</p>
                         </article>
                         `;
-        });
+            });
+        }
+    }
+    catch (error) {
+        const errorMessage = document.getElementById("error-message");
+        if (errorMessage) {
+            errorMessage.textContent = "Weather forecast data could not be loaded. Please try again.";
+        }
+        console.error(error);
     }
 }
 //Toggle button function

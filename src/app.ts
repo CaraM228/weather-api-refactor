@@ -19,6 +19,7 @@ const weatherContainer = document.getElementById("weather-card-container");
 
 //Async Function
 async function getWeather(): Promise<void> {
+    try{
 		const response = await fetch(weatherUrl);
 
 		if(!response.ok){
@@ -26,10 +27,14 @@ async function getWeather(): Promise<void> {
 		}
 
 		const data = await response.json();
+        const errorMessage = document.getElementById("error-message");
+            if (errorMessage){
+                errorMessage.textContent = "";
+            }
 
         const forecastDays: ForecastDay[] = data.forecast.forecastday;
         if(weatherContainer){
-            weatherContainer.innerHTML = ""
+            weatherContainer.innerHTML = "";
 
             forecastDays.forEach((day) => {
                 weatherContainer.innerHTML += `
@@ -49,7 +54,14 @@ async function getWeather(): Promise<void> {
                         `;
             });
         }
-	}
+	} catch (error){
+        const errorMessage = document.getElementById("error-message");
+            if (errorMessage){
+                errorMessage.textContent = "Weather forecast data could not be loaded. Please try again.";
+            }
+            console.error(error);
+    }
+}
     //Toggle button function
         const toggleBtn = document.getElementById("toggle-btn");
         toggleBtn?.addEventListener("click", () => {
