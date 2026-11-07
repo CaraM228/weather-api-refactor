@@ -1,33 +1,22 @@
+//Types
+type ForecastDay = {
+    date: string;
+    day: {
+        avgtemp_c: number;
+        avgtemp_f: number;
+        condition: {
+            text: string;
+            icon: string;
+        };
+    };
+};
+
 const weatherUrl = "https://api.weatherapi.com/v1/forecast.json?key=bba6bfabf09e47e886940311262410&q=Calgary&days=3&aqi=no&alerts=no"
 
 let celsius: boolean = true;
 
 const weatherContainer = document.getElementById("weather-card-container");
 
-if(weatherContainer){
-	weatherContainer.innerHTML = 
-	`<article class="weather-card bg-white border border-black rounded-lg shadow-2xl p-4 text-center">
-            <h2 class="day text-blue-800 font-bold">Monday</h2>
-            <p class="date">date</p>
-            <img class="weather-icon mx-auto w-16 h-16" alt="Weather icon">
-            <p class="temp">15°c</p>
-            <p class="condition">Clear skies</p>
-        </article>
-		<article class="weather-card bg-white border border-black rounded-lg shadow-2xl p-4 text-center">
-            <h2 class="day text-blue-800 font-bold">Monday</h2>
-            <p class="date">date</p>
-            <img class="weather-icon mx-auto w-16 h-16" alt="Weather icon">
-            <p class="temp">15°c</p>
-            <p class="condition">Clear skies</p>
-        </article>
-		<article class="weather-card bg-white border border-black rounded-lg shadow-2xl p-4 text-center">
-            <h2 class="day text-blue-800 font-bold">Monday</h2>
-            <p class="date">date</p>
-            <img class="weather-icon mx-auto w-16 h-16" alt="Weather icon">
-            <p class="temp">15°c</p>
-            <p class="condition">Clear skies</p>
-        </article>`
-}
 //Async Function
 async function getWeather(): Promise<void> {
 		const response = await fetch(weatherUrl);
@@ -37,7 +26,30 @@ async function getWeather(): Promise<void> {
 		}
 
 		const data = await response.json();
-		console.log(data);
+
+        const forecastDays: ForecastDay[] = data.forecast.forecastday;
+        if(weatherContainer){
+            weatherContainer.innerHTML = ""
+
+            forecastDays.forEach((day) => {
+                weatherContainer.innerHTML += `
+                    <article class="weather-card bg-white border border-black rounded-lg shadow-2xl p-4 text-center">
+                    <h2 class="day text-blue-800 font-bold">${new Date(day.date).toLocaleDateString("en-US", {
+                        weekday: "long"
+                    })}</h2>
+                    <p class="date">${day.date}</p>
+                    <img
+                        src="https:${day.day.condition.icon}"
+                        alt="${day.day.condition.text}"
+                        class="weather-icon mx-auto w-16 h-16"
+                        >
+                        <p class="temp">${day.day.avgtemp_c}°C</p>
+                        <p class="condition">${day.day.condition.text}</p>
+                        </article>
+                        `;
+            });
+        }
+		
 	}
 
 	getWeather();
