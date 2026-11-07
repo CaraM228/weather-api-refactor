@@ -23,13 +23,20 @@ async function getWeather() {
                         alt="${day.day.condition.text}"
                         class="weather-icon mx-auto w-16 h-16"
                         >
-                        <p class="temp">${day.day.avgtemp_c}°C</p>
+                        <p class="temp">${celsius ? day.day.avgtemp_c : day.day.avgtemp_f} ${celsius ? "°C" : "°F"}</p>
                         <p class="condition">${day.day.condition.text}</p>
                         </article>
                         `;
         });
     }
 }
+//Toggle button function
+const toggleBtn = document.getElementById("toggle-btn");
+toggleBtn?.addEventListener("click", () => {
+    celsius = !celsius;
+    toggleBtn.textContent = `Viewing: ${celsius ? "°C" : "°F"}`;
+    getWeather();
+});
 getWeather();
 export {};
 //# sourceMappingURL=app.js.map
