@@ -1,5 +1,5 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+const weatherUrl = "https://api.weatherapi.com/v1/forecast.json?key=bba6bfabf09e47e886940311262410&q=Calgary&days=3&aqi=no&alerts=no";
+let celsius = true;
 const weatherContainer = document.getElementById("weather-card-container");
 if (weatherContainer) {
     weatherContainer.innerHTML =
@@ -25,4 +25,15 @@ if (weatherContainer) {
             <p class="condition">Clear skies</p>
         </article>`;
 }
+//Async Function
+async function getWeather() {
+    const response = await fetch(weatherUrl);
+    if (!response.ok) {
+        throw new Error("Error! Weather data could not be loaded.");
+    }
+    const data = await response.json();
+    console.log(data);
+}
+getWeather();
+export {};
 //# sourceMappingURL=app.js.map
