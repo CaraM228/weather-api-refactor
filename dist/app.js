@@ -5,6 +5,10 @@ const weatherContainer = document.getElementById("weather-card-container");
 //Async Function
 async function getWeather() {
     try {
+        const loading = document.getElementById("loading-message");
+        if (loading) {
+            loading.textContent = "Loading...";
+        }
         const response = await fetch(weatherUrl);
         if (!response.ok) {
             throw new Error("Error! Weather data could not be loaded.");
@@ -34,6 +38,9 @@ async function getWeather() {
                         </article>
                         `;
             });
+            if (loading) {
+                loading.textContent = "";
+            }
         }
     }
     catch (error) {
