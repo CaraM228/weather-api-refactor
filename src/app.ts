@@ -85,6 +85,8 @@ async function getWeather(): Promise<void> {
     
     //Dark/light mode button
     const modeBtn = document.getElementById("mode-btn");
+    const header = document.getElementById("page-header");
+    const title = document.getElementById("title");
     if (modeBtn){
         modeBtn.textContent = "Mode: Light"
     }
@@ -92,9 +94,13 @@ async function getWeather(): Promise<void> {
             darkMode = !darkMode;
             if (darkMode){
                 document.body.style.backgroundColor = "grey";
+                header!.style.backgroundColor = "black";
+                title!.style.color = "white";
                 modeBtn.textContent = "Mode: Dark";
             }else{
                 document.body.style.backgroundColor = "skyblue";
+                header!.style.backgroundColor = "";
+                title!.style.color = "";
                 modeBtn.textContent = "Mode: Light";
             }
         });
