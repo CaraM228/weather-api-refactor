@@ -9,11 +9,14 @@
 </head>
 <body class="bg-sky-400 max-w-6xl mx-auto">
     <main>
-        <header class="bg-blue-400 flex flex-col md:flex-row items-center justify-center gap-4 p-4 rounded-lg">
-            <h1 class="text-center text-4xl md:text-6xl font-bold">Weather Forecast in Calgary</h1>
+        <header class="bg-blue-400 p-6 rounded-lg">
+            <h1 class="text-2xl md:text-4xl font-bold p-4">Weather Forecast in Calgary</h1>
+            <div class="flex justify-center gap-4 mt-4">
             <button id="toggle-btn" class="bg-white rounded-lg px-2 hover:bg-blue-100">Viewing: °C</button>
             <button id="mode-btn" class="bg-white rounded-lg px-2 hover:bg-blue-100">Mode: Dark</button>
+            </div>
         </header>
+        <p id="loading-message"></p>
         <p id="error-message" class="text-red-500 text-center"></p>
 
         <div id="weather-card-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 px-4">
